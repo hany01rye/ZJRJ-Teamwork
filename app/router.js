@@ -53,15 +53,16 @@ const routes = [
     },
 ];
 
-function render(route) {
+async function render(route) {
+    $.app.sync();
     $.app.setTitle(route.title);
     $("#app").empty();
-    route.component().then(component => {
-        $("#app").append(component.render());
-    });
+    const component = await route.component();
+    const r = await component.render();
+    $("#app").append(r);
 }
 
-function parseParam(param) {
+function parseParams(param) {
     var params = {};
     if (param == null) {
         return params;
@@ -94,9 +95,9 @@ function getRoute() {
         param = route.substring(route.indexOf("?") + 1);
         route = route.substring(0, route.indexOf("?"));
     }
-    param = parseParam(param);
+    param = parseParams(param);
     $.app.route = route;
-    $.app.param = param;
+    $.app.params = param;
 }
 
 function matchRoute() {
@@ -141,6 +142,7 @@ window.addEventListener("hashchange", () => {
 });
 
 window.onload = () => {
+    $.app.loadActiveUser();
     getRoute();
     matchRoute();
 };
