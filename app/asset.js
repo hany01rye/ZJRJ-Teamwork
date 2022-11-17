@@ -20,6 +20,7 @@ $.app = {
 		}
 	},
 	sync: async function () {
+		loadActiveUser();
 		const r = await this.get("/user/login/");
 		if (r.statusCode == 401) {
 			this.updateActiveUser(null);
