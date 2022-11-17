@@ -1,3 +1,22 @@
+a {
+	outline: none !important;
+}
+a:hover {
+	outline: none !important;
+}
+a:active {
+	outline: none !important;
+}
+a:focus {
+	outline: none !important;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
 #side-nav {
 	position: fixed;
 	width: 6rem;
@@ -25,12 +44,6 @@
 .side-nav-btn:focus {
 	color: #fff;
 	outline: none !important;
-}
-
-body {
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
 }
 
 #container {

@@ -1,4 +1,4 @@
-export function render() {
+export async function render() {
 	return [
 		$.app.t.header(),
 		$.app.t.secondaryHeader("出错啦！"),
