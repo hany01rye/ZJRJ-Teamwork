@@ -7,7 +7,7 @@ function myimg(className, src) {
 }
 
 function mytable(lib) {
-    var tab = $("<table></table");
+    var tab = $("<table></table>");
     tab.addClass("am-table am-table-bordered am-table-radius");
     tab.append("<thead><tr><th>提交结果</th><th>次数</th></tr></thead>");
     var body = $("<tbody></tbody>");
