@@ -87,6 +87,17 @@ $.app = {
 				r.addClass(className);
 				r.attr("src", src);
 				return r;
+			},
+
+			ul: function (className) {
+				var r = $("<ul></ul>");
+				r.addClass(className);
+				return r;
+			},
+			li: function (className) {
+				var r = $("<li></li>");
+				r.addClass(className);
+				return r;
 			}
 		},
 		auth: function () {
@@ -144,6 +155,62 @@ $.app = {
 			c.append(items);
 			r.append(c);
 			return r;
-		}
+		},
 	},
+
+	problem: {
+		get_problems: async function () {
+			var problem_list = (await $.app.get("/problem/")).data.problems;
+			var r = $.app.t.tag.div("am-list-news am-list-news-default");
+			var title = $.app.t.tag.div("am-list-news-hd am-cf");
+			var stat = $.app.t.t("h2");
+			stat.addClass("pstatus");
+			stat.text("状态")
+			var pid = $.app.t.t("h2");
+			pid.addClass("pid");
+			pid.text("题号")
+			var pname = $.app.t.t("h2");
+			pname.addClass("pname");
+			pname.text("题目名称")
+			var ppass = $.app.t.t("h2");
+			ppass.addClass("ppass");
+			ppass.text("通过率");
+			title.append(stat);
+			title.append(pid);
+			title.append(pname);
+			title.append(ppass);
+			r.append(title);
+			var lis = $.app.t.tag.div("am-list-news-bd");
+			var ul = $.app.t.tag.ul("am-list");
+			for (let i = 0; i < problem_list.length; i++) {
+				ul.append(this.problem_row(problem_list[i]));
+			}
+			lis.append(ul);
+			r.append(lis);
+			return r;
+		},
+
+		problem_row: function (item) {
+			var r = $.app.t.tag.li("am-g am-list-item-dated");
+			var info = $.app.t.tag.div("am-list-news-hd am-cf");
+			var stat = $.app.t.t("h2");
+			stat.addClass("pstatus");
+			stat.text("0");
+			var pid = $.app.t.t("h2");
+			pid.addClass("pid");
+			pid.text(item.pid);
+			var pname = $.app.t.t("h2");
+			pname.addClass("pname");
+			pname.append($.app.t.tag.a("am-list-item-hd", "##", item.title));
+			var ppass = $.app.t.t("h2");
+			ppass.addClass("ppass");
+			ppass.text("0");
+			info.append(stat);
+			info.append(pid);
+			info.append(pname);
+			info.append(ppass);
+			r.append(info);
+			return r;
+		}
+	}
 };

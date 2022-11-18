@@ -118,3 +118,23 @@ body {
 	display: flex;
 	clear: both;
 }
+
+.pstatus {
+	width: 6rem;
+	text-align: center;
+}
+
+.pid {
+	width: 12rem;
+	text-align: center;
+}
+
+.pname {
+	width: 60rem;
+	text-align: left;
+}
+
+.ppass {
+	width: 14rem;
+	text-align: center;
+}
