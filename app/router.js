@@ -56,9 +56,9 @@ const routes = [
 async function render(route) {
     $.app.sync();
     $.app.setTitle(route.title);
-    $("#app").empty();
     const component = await route.component();
     const r = await component.render();
+    $("#app").empty();
     $("#app").append(r);
 }
 
@@ -127,7 +127,7 @@ function matchRoute() {
         }
         for (var j = 0; j < route.length; j++) {
             if (path[j].length > 0 && path[j][0] == ":") {
-                $.app.param[path[j].substring(1)] = route[j];
+                $.app.params[path[j].substring(1)] = route[j];
             }
         }
         target = routes[i];

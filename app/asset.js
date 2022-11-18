@@ -20,7 +20,7 @@ $.app = {
 		}
 	},
 	sync: async function () {
-		loadActiveUser();
+		this.loadActiveUser();
 		const r = await this.get("/user/login/");
 		if (r.statusCode == 401) {
 			this.updateActiveUser(null);
@@ -66,7 +66,7 @@ $.app = {
 				var r = $("<div></div>");
 				r.addClass(className);
 				if (typeof(content) == "string") {
-					r.text(content);
+					r.html(content);
 				} else {
 					r.append(content);
 				}
@@ -77,7 +77,7 @@ $.app = {
 				r.addClass(className);
 				r.attr("href", href);
 				if (typeof(content) == "string") {
-					r.text(content);
+					r.html(content);
 				} else {
 					r.append(content);
 				}
@@ -89,7 +89,6 @@ $.app = {
 				r.attr("src", src);
 				return r;
 			},
-
 			ul: function (className) {
 				var r = $("<ul></ul>");
 				r.addClass(className);
@@ -99,7 +98,7 @@ $.app = {
 				var r = $("<li></li>");
 				r.addClass(className);
 				return r;
-			}
+			},
 		},
 		auth: function () {
 			if ($.app.login) {
@@ -147,14 +146,34 @@ $.app = {
 			r.append(items);
 			return r;
 		},
+		boxes: function (items) {
+			var w = this.tag.div("am-g display-flex");
+			w.append(items);
+			w.children().addClass("display-flex");
+			w.find("div").removeClass("single-box am-u-sm-centered");
+			w.find(".am-panel").addClass("full-width");
+			return w;
+		},
 		box: function (width, items) {
 			if (width == null) {
 				width = 12;
 			}
-			var r = this.tag.div("am-panel am-panel-default am-u-sm-centered am-u-sm-" + width);
-			var c = this.tag.div("box am-panel-bd");
+			var w = this.tag.div("single-box am-u-sm-centered am-u-sm-" + width);
+			var r = this.tag.div("am-panel am-panel-default");
+			var c = this.tag.div("am-panel-bd am-cf");
 			c.append(items);
 			r.append(c);
+			w.append(r);
+			return w;
+		},
+		list: function (items) {
+			var r = this.t("ul");
+			r.addClass("am-list");
+			for (var i = 0; i < items.length; i++) {
+				var c = this.t("li");
+				c.append(items[i]);
+				r.append(c);
+			}
 			return r;
 		},
 	},
@@ -212,6 +231,6 @@ $.app = {
 			info.append(ppass);
 			r.append(info);
 			return r;
-		}
-	}
+		},
+	},
 };

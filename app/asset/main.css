@@ -1,3 +1,22 @@
+a {
+	outline: none !important;
+}
+a:hover {
+	outline: none !important;
+}
+a:active {
+	outline: none !important;
+}
+a:focus {
+	outline: none !important;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
 #side-nav {
 	position: fixed;
 	width: 6rem;
@@ -25,12 +44,6 @@
 .side-nav-btn:focus {
 	color: #fff;
 	outline: none !important;
-}
-
-body {
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
 }
 
 #container {
@@ -82,9 +95,6 @@ body {
 .header-link:hover {
 	color: #eee;
 }
-.header > h1, h2, h3, h4, h5, h6 {
-	margin: 0;
-}
 
 .secondary-header {
 	color: #fff;
@@ -93,64 +103,21 @@ body {
 	line-height: 12rem;
 	clear: both;
 }
-.secondary-header > h1, h2, h3, h4, h5, h6 {
-	margin: 0;
-}
 
 .main-container {
 	padding: 2em 0;
 }
 
-.box {
+.single-box {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.display-flex {
 	display: flex;
-	clear: both;
 }
-.index-content {
-	max-width: 1100px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-padding: 20px;
-background-color: white;
+.full-width {
+	width: 100%;
 }
-
-.fg-red {
-	color: #e74c3c !important;
-}
-
-.punch-padding{
-	height: 40px;
-}
-
-.index-calendar{
-	margin-top: 10px;
-	margin-bottom: 25px;
-}
-
-.punch-big{
-	display: inline-block;
-	font-size: 64px;
-	vertical-align: top;
-	line-height: 55px;
-	font-weight: bolder;
-}
-
-.smallsize {
-	font-size: 15px;
-	color: #7f7f7f;
-}
-
-.article {
-	background: rgba(255,255,255,.7);
-	padding: 8px;
-	/* font-size: 15px; */
-	margin-bottom: 15px;
-	position: relative;
-}
-
-.index-stat {
-	 height: 190px;
-}
-
 
 .pstatus {
 	width: 6rem;
