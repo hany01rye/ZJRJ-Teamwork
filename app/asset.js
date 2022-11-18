@@ -23,9 +23,9 @@ $.app = {
 		this.loadActiveUser();
 		const r = await this.get("/user/login/");
 		if (r.statusCode == 401) {
-			this.updateActiveUser(null);
+			this.updateActiveUser(null, false);
 		} else {
-			this.updateActiveUser(r.data);
+			this.updateActiveUser(r.data, true);
 		}
 	},
 	setTitle: function (title) {
