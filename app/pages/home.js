@@ -10,6 +10,15 @@ function jump() {
 	return p;
 }
 
+function slider() {
+	var c = $.app.t.tag.ul("am-slides");
+	c.append($("<li><img src='app/asset/gallery/pic1.png' /></li>"));
+	c.append($("<li><img src='app/asset/gallery/pic2.png' /></li>"));
+	var r = $.app.t.tag.div("am-slider am-slider-default", c);
+	r.flexslider();
+	return r;
+}
+
 function calendar() {
 	return $.app.t.tag.div("am-text-center am-text-sm", "距 <strong>BCPC2022 决赛</strong> 还剩 <strong>15 天</strong>");
 }
@@ -20,9 +29,7 @@ export async function render() {
 		$.app.t.container([
 			$.app.t.boxes([
 				$.app.t.box(8, [
-					$.app.t.tag.div("am-slider am-slider-default", [
-
-					]),
+					slider(),
 				]),
 				$.app.t.box(4, [
 					$.app.t.tag.div("am-text-center", [
