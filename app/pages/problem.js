@@ -225,10 +225,10 @@ export async function render() {
 	var selector = $.app.t.t("form");
 	var slt = $.app.t.t("select");
 	var c_99 = $.app.t.t("option"); c_99.attr("value", "C"); c_99.text("C");
-	var cpp_11 = $.app.t.t("option"); cpp_11.attr("value", "C++11"); cpp_11.text("C++11");
-	var cpp_14 = $.app.t.t("option"); cpp_14.attr("value", "C++14"); cpp_14.text("C++14");
-	var cpp_17 = $.app.t.t("option"); cpp_17.attr("value", "C++17"); cpp_17.text("C++17");
-	var py = $.app.t.t("option"); py.attr("value", "Python3"); py.text("Python3");
+	var cpp_11 = $.app.t.t("option"); cpp_11.attr("value", "C++ 11"); cpp_11.text("C++ 11");
+	var cpp_14 = $.app.t.t("option"); cpp_14.attr("value", "C++ 14"); cpp_14.text("C++ 14");
+	var cpp_17 = $.app.t.t("option"); cpp_17.attr("value", "C++ 17"); cpp_17.text("C++ 17");
+	var py = $.app.t.t("option"); py.attr("value", "Python 3"); py.text("Python 3");
 	cpp_11.attr("selected", "selected");
 	slt.append(c_99);
 	slt.append(cpp_11);
@@ -249,7 +249,7 @@ export async function render() {
 	code.append(submit_bt);
 
 
-	// submit button
+	// change between problem and code
 	var isProblem = true;
 	var editor;
 	bt.click(function() {
@@ -275,6 +275,14 @@ export async function render() {
 		} else {
 			editor.session.setMode("ace/mode/c_cpp");
 		}
+	});
+
+	submit_bt.click(function() {
+		var lang = slt.val();
+		var source_code = editor.getValue();
+		$.app.post("/submission/", {'problem': pid,
+															 'lang': lang,
+															 'source': source_code});
 	});
 
   return page;

@@ -181,24 +181,43 @@ $.app = {
 	problem: {
 		get_problems: async function () {
 			var problem_list = (await $.app.get("/problem/")).data.problems;
+			var vis = new Array(problem_list.length).fill(0);
+			$.app.user = (await $.app.get("/user/10/")).data; // test
+			if ($.app.user) {
+				var statistics_lis = (await $.app.get("/user/" + $.app.user.uid + "/statistics/")).data.accepted;
+				for (var i = 0; i < statistics_lis.length; i++) {
+					vis[statistics_lis[i].pid - 1] = 1;
+				}
+			}
 			var r = $.app.t.t("table");
 			r.addClass("am-table");
 			r.append("<thead><tr><th>状态</th><th>题号</th><th>题目名称</th><th>通过率</th></tr></thead>");
 			var body = $.app.t.t("tbody");
 			for (var i = 0; i < problem_list.length; i++) {
-				body.append(this.problem_row(problem_list[i]));
+				body.append(this.problem_row(problem_list[i], vis[i]));
 			}
 			r.append(body);
 			return r;
 		},
 
-		problem_row: function (item) {
+		problem_row: function (item, stat) {
 			var r = $.app.t.t("tr");
 			var td = $.app.t.t("td");
-			td.text("0");
+			td.css("max-width", "1.5rem");
+			td.css("padding-left", "10px");
+			var pic;
+			if (stat) {
+				pic = $("<img src='app/asset/status/ac.png' />");
+			} else {
+				pic = $("<img src='app/asset/status/no.png' />");
+			}
+			pic.css("max-width", "20%");
+			pic.css("max-height", "20%");
+			td.append(pic);
 			r.append(td);
 
 			var td = $.app.t.t("td");
+			td.css("padding-left", "16px");
 			td.text(item.pid);
 			r.append(td);
 
@@ -207,7 +226,12 @@ $.app = {
 			r.append(td);
 
 			var td = $.app.t.t("td");
-			td.text("0");
+			var ratio = $.app.t.t("meter");
+			ratio.attr("min", "0");
+			ratio.attr("max", item.submission_count);
+			ratio.attr("value", item.accepted_count);
+			td.append(ratio);
+			// td.text(item.accepted_count + "/" + item.submission_count);
 			r.append(td);
 			return r;
 		},
