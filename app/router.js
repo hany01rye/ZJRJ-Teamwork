@@ -60,6 +60,7 @@ async function render(route) {
     const r = await component.render();
     $("#app").empty();
     $("#app").append(r);
+    MathJax.typeset();
 }
 
 function parseParams(param) {

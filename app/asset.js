@@ -181,55 +181,34 @@ $.app = {
 	problem: {
 		get_problems: async function () {
 			var problem_list = (await $.app.get("/problem/")).data.problems;
-			var r = $.app.t.tag.div("am-list-news am-list-news-default");
-			var title = $.app.t.tag.div("am-list-news-hd am-cf");
-			var stat = $.app.t.t("h2");
-			stat.addClass("pstatus");
-			stat.text("状态")
-			var pid = $.app.t.t("h2");
-			pid.addClass("pid");
-			pid.text("题号")
-			var pname = $.app.t.t("h2");
-			pname.addClass("pname");
-			pname.text("题目名称")
-			var ppass = $.app.t.t("h2");
-			ppass.addClass("ppass");
-			ppass.text("通过率");
-			title.append(stat);
-			title.append(pid);
-			title.append(pname);
-			title.append(ppass);
-			r.append(title);
-			var lis = $.app.t.tag.div("am-list-news-bd");
-			var ul = $.app.t.tag.ul("am-list");
-			for (let i = 0; i < problem_list.length; i++) {
-				ul.append(this.problem_row(problem_list[i]));
+			var r = $.app.t.t("table");
+			r.addClass("am-table");
+			r.append("<thead><tr><th>状态</th><th>题号</th><th>题目名称</th><th>通过率</th></tr></thead>");
+			var body = $.app.t.t("tbody");
+			for (var i = 0; i < problem_list.length; i++) {
+				body.append(this.problem_row(problem_list[i]));
 			}
-			lis.append(ul);
-			r.append(lis);
+			r.append(body);
 			return r;
 		},
 
 		problem_row: function (item) {
-			var r = $.app.t.tag.li("am-g am-list-item-dated");
-			var info = $.app.t.tag.div("am-list-news-hd am-cf");
-			var stat = $.app.t.t("h2");
-			stat.addClass("pstatus");
-			stat.text("0");
-			var pid = $.app.t.t("h2");
-			pid.addClass("pid");
-			pid.text(item.pid);
-			var pname = $.app.t.t("h2");
-			pname.addClass("pname");
-			pname.append($.app.t.tag.a("am-list-item-hd", "##", item.title));
-			var ppass = $.app.t.t("h2");
-			ppass.addClass("ppass");
-			ppass.text("0");
-			info.append(stat);
-			info.append(pid);
-			info.append(pname);
-			info.append(ppass);
-			r.append(info);
+			var r = $.app.t.t("tr");
+			var td = $.app.t.t("td");
+			td.text("0");
+			r.append(td);
+
+			var td = $.app.t.t("td");
+			td.text(item.pid);
+			r.append(td);
+
+			var td = $.app.t.t("td");
+			td.append($.app.t.tag.a(null, "#/p/" + item.pid, item.title));
+			r.append(td);
+
+			var td = $.app.t.t("td");
+			td.text("0");
+			r.append(td);
 			return r;
 		},
 	},

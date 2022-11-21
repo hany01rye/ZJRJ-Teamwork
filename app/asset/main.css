@@ -177,3 +177,114 @@ body {
     margin-bottom: 30px;
     margin-top: 20px;
 }
+
+.problem-h2 {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.sample {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.sample-title {
+	font-weight: 800;
+}
+
+.copy-button {
+	color: #0e90d2;
+	background-color: white;
+	height: fit-content;
+	border-color: #0e90d2;
+	border-radius: 4px;
+	border-width: 1px;
+	font-size: 14px;
+	border-style: solid;
+}
+.copy-button:hover {
+	background-color: azure;
+}
+
+.sidebar-title {
+	font-size: large;
+	border-bottom: 1px solid gainsboro;
+	font-weight: 800;
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+.statistic-num {
+	font-size: x-large;
+}
+
+.statistic-son {
+	color: darkgray;
+}
+
+.problem-head {
+	color: #fff;
+	background-color: #444;
+	height: 12rem;
+}
+
+.problem-head-wrap {
+	height: 12rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+div:nth-child(2) {
+	justify-self: flex-end;
+}
+
+.problem-head-title {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+.problem-head-sub {
+	color: gainsboro;
+}
+
+.problem-head-btm {
+	display: flex;
+	padding-bottom: 5px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.submit-btn {
+	margin-top: 1.3rem;
+	background-color: rgb(52, 152, 219);
+	border: none;
+	border-radius: 3px;
+	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.submit-btn:hover {
+	opacity: 0.8;
+}
+
+.side-row {
+	display: flex;
+	justify-content: space-between;
+	font-weight: 700;
+	margin: 5px;
+}
+
+.code-editor {
+	min-height: 50rem;
+}
+
+.language-choose {
+	display: flex;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.language-choose-son {
+	margin-right: 2rem;
+}
