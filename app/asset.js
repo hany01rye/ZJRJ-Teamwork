@@ -211,17 +211,17 @@ $.app = {
 		problem_row: function (item, stat) {
 			var r = $.app.t.t("tr");
 			var td = $.app.t.t("td");
-			td.css("max-width", "1.5rem");
-			td.css("padding-left", "10px");
-			var pic;
+			td.css("padding-left", "14px");
+			var pic = $.app.t.t("i");
 			if (stat) {
-				pic = $("<img src='app/asset/status/ac.png' />");
+				pic.addClass("fa-regular fa-check")
+				pic.css("color", "green");
 			} else {
-				pic = $("<img src='app/asset/status/no.png' />");
+				pic.addClass("fa-regular fa-minus")
+				td.append(pic)
 			}
-			pic.css("max-width", "20%");
-			pic.css("max-height", "20%");
-			td.append(pic);
+			pic.css("font-style", "normal");
+			td.append(pic)
 			r.append(td);
 
 			var td = $.app.t.t("td");
