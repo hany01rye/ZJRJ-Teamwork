@@ -157,8 +157,53 @@ export async function render() {
 	var tb = $.app.t.t("table");
 	tb.addClass("am-table am-table-centered");
 	tb.append($("<thead><tr><th>ID</th><th>结果</th></tr></thead>").css("color", "darkgray"));
-
+	var uid = $.app.user.uid;
 	c2.append(tb);
+	uid = 1;				// test
+	if (uid) {
+		var submit_data = (await $.app.get("/submission/?submitter=" + uid + "&problem=" + pid)).data.submissions;
+		console.log(submit_data);
+		var t_body = $.app.t.t("tbody");
+		for (var i = 0; i < submit_data.length && i < 5; i++) {
+			var sd = submit_data[i];
+			var tr = $.app.t.t("tr");
+			tr.css("text-align", "center");
+			var tdl = $.app.t.t("td"); tdl.text(sd.sid);
+			tdl.css("color", "darkgray");
+			var tdr = $.app.t.t("td"); tdr.text(sd.status);
+			tdr.css("font-weight", "bolder");
+			switch (sd.status) {
+				case "Accepted":
+					tdr.css("color", "green");
+					break;
+				case "Wrong Answer":
+					tdr.css("color", "red");
+					break;
+				case "Compilation Error":
+					tdr.css("color", "darkgray");
+					break;
+				case "Runtime Error":
+					tdr.css("color", "gold");
+					break;
+				case "Time Limit Exceeded":
+					tdr.css("color", "darkorange");
+					break;
+				case "Memory Limit Exceeded":
+					tdr.css("color", "darkorange");
+					break;
+			}
+			tr.append(tdl); tr.append(tdr);
+			t_body.append(tr);
+		}
+		tb.append(t_body);
+	} else {
+		var no_data = $.app.t.tag.div(null, "暂无数据");
+		no_data.css("text-align", "center");
+		no_data.css("color", "darkgray");
+		no_data.css("font-weight", "800");
+		c2.append(no_data);
+	}
+
 
 	var b1 = $.app.t.box(null, c1);
 	var b2 = $.app.t.box(null, c2);
@@ -173,6 +218,7 @@ export async function render() {
 	page.push(c);
 
 	var code = $.app.t.container();
+	code.css("padding-top", "5px");
 	code.append($.app.t.tag.div("problem-h2", "提交代码"));
 	var langChoose = $.app.t.tag.div("language-choose");
 	langChoose.append($.app.t.tag.div("language-choose-son", "选择语言"));
