@@ -22,7 +22,7 @@ $.app = {
 	sync: async function () {
 		this.loadActiveUser();
 		const r = await this.get("/user/login/");
-		if (r.statusCode == 401) {
+		if (r.status == 401) {
 			this.updateActiveUser(null, false);
 		} else {
 			this.updateActiveUser(r.data, true);
@@ -102,7 +102,15 @@ $.app = {
 		},
 		auth: function () {
 			if ($.app.login) {
-				return this.tag.a("header-link am-fr", "#/u/" + $.app.user.uid + "/", $.app.user.username);
+				var logout = this.tag.a("header-link am-fr", "", "注销");
+				logout.click(async () => {
+					await $.app.get("/user/logout/");
+            		window.location.href = "#/";
+				});
+				return [
+					logout,
+					this.tag.a("header-link am-fr", "#/u/" + $.app.user.uid + "/", $.app.user.username),
+				];
 			} else {
 				return [
 					this.tag.a("header-link am-fr", "#/register/", "注册"),
