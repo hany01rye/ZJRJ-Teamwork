@@ -174,24 +174,61 @@ export async function render() {
 
 	var code = $.app.t.container();
 	code.append($.app.t.tag.div("problem-h2", "提交代码"));
-	var langChoose = $.app.t.tag.div(null);
-	langChoose.append($.app.t.tag.div(null, "选择语言"));
+	var langChoose = $.app.t.tag.div("language-choose");
+	langChoose.append($.app.t.tag.div("language-choose-son", "选择语言"));
+	var selector = $.app.t.t("form");
+	var slt = $.app.t.t("select");
+	var c_99 = $.app.t.t("option"); c_99.attr("value", "C"); c_99.text("C");
+	var cpp_11 = $.app.t.t("option"); cpp_11.attr("value", "C++11"); cpp_11.text("C++11");
+	var cpp_14 = $.app.t.t("option"); cpp_14.attr("value", "C++14"); cpp_14.text("C++14");
+	var cpp_17 = $.app.t.t("option"); cpp_17.attr("value", "C++17"); cpp_17.text("C++17");
+	var py = $.app.t.t("option"); py.attr("value", "Python3"); py.text("Python3");
+	cpp_11.attr("selected", "selected");
+	slt.append(c_99);
+	slt.append(cpp_11);
+	slt.append(cpp_14);
+	slt.append(cpp_17);
+	slt.append(py);
+	selector.append(slt);
+	langChoose.append(selector);
 	code.append(langChoose);
+	var ce = $.app.t.tag.div("code-editor");
+	ce.attr("id", "editor");
+	code.append(ce);
+	var submit_bt = $.app.t.t("button");
+	submit_bt.addClass("submit-btn")
+	submit_bt.text("提交测评");
+	submit_bt.css("background-color", "crimson");
+	submit_bt.css("color", "white");
+	code.append(submit_bt);
 
 
 	// submit button
 	var isProblem = true;
+	var editor;
 	bt.click(function() {
 		l.empty();
 		if (isProblem) {
 			bt.text("返回题目");
 			l.append($.app.t.box(null, code));
+			editor = ace.edit("editor");
+			editor.setTheme("ace/theme/xcode");
+			editor.session.setMode("ace/mode/c_cpp");
+			document.getElementById("editor").style.fontSize = '16px';
 		} else {
 			bt.text("提交答案");
 			l.append($.app.t.box(null, main));
 		}
 		isProblem = !isProblem;
-		console.log(isProblem);
+	});
+
+	slt.change(function() {
+		console.log(slt.val());
+		if (slt.val() == "Python3") {
+			editor.session.setMode("ace/mode/python");
+		} else {
+			editor.session.setMode("ace/mode/c_cpp");
+		}
 	});
 
   return page;
