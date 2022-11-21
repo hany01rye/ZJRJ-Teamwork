@@ -54,13 +54,17 @@ const routes = [
 ];
 
 async function render(route) {
+    NProgress.start();
     $.app.sync();
-    $.app.setTitle(route.title);
+    if (route.title) {
+        $.app.setTitle(route.title);
+    }
     const component = await route.component();
     const r = await component.render();
     $("#app").empty();
     $("#app").append(r);
     MathJax.typeset();
+    NProgress.done();
 }
 
 function parseParams(param) {

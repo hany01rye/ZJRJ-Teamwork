@@ -139,8 +139,7 @@ export async function render() {
 	}
 
 	sidebar.css("padding-top", "0");
-	var c1 = $.app.t.container();
-	c1.css("padding", "5px");
+	var c1 = $.app.t.tag.div();
 	var auth = $.app.t.tag.div("side-row");
 	auth.append($.app.t.tag.div(null, "题目提供者"));
 	auth.append($.app.t.tag.div(null, uName))
@@ -150,14 +149,13 @@ export async function render() {
 	stat.append($.app.t.tag.div(null, "0"));
 	c1.append(stat);
 
-	var c2 = $.app.t.container();
-	c2.css("padding", "5px");
+	var c2 = $.app.t.tag.div();
 	var submissionsTitle = $.app.t.tag.div("sidebar-title", "提交记录");
 	c2.append(submissionsTitle);
 	var tb = $.app.t.t("table");
 	tb.addClass("am-table am-table-centered");
 	tb.append($("<thead><tr><th>ID</th><th>结果</th></tr></thead>").css("color", "darkgray"));
-	var uid = $.app.user.uid;
+	if ($.app.user) var uid = $.app.user.uid;
 	c2.append(tb);
 	uid = 1;				// test
 	if (uid) {
@@ -217,8 +215,7 @@ export async function render() {
 	c.append(d);
 	page.push(c);
 
-	var code = $.app.t.container();
-	code.css("padding-top", "5px");
+	var code = $.app.t.tag.div();
 	code.append($.app.t.tag.div("problem-h2", "提交代码"));
 	var langChoose = $.app.t.tag.div("language-choose");
 	langChoose.append($.app.t.tag.div("language-choose-son", "选择语言"));
@@ -284,6 +281,7 @@ export async function render() {
 															 'lang': lang,
 															 'source': source_code});
 	});
+	$.app.setTitle(problem.title);
 
   return page;
 }

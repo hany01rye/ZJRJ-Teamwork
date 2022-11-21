@@ -69,6 +69,8 @@ export async function render() {
     var stat = await $.app.get("/user/" + uid + "/statistics/");
     console.log(user.data);
     console.log(stat.data);
+    
+    $.app.setTitle(user.data.username);
 
 	return [
 		$.app.t.header(),
