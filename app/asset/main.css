@@ -323,3 +323,8 @@ div:nth-child(2) {
 .submission-info-icon {
 	padding-right: 0.5em;
 }
+
+input[type="number"] {
+	-webkit-appearance: none;
+	-moz-appearance: textfield !important;
+}

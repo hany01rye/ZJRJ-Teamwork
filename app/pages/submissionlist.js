@@ -18,17 +18,40 @@ function pagelink(page) {
 	return url;
 }
 
+function dropdown(name, selected, options) {
+	var r = $.app.t.t("select");
+	r.attr("id", name);
+	for (var i in options) {
+		var o = $.app.t.t("option");
+		o.attr("value", i);
+		o.text(options[i]);
+		if (i == selected) {
+			o.attr("selected", true);
+		}
+		r.append(o);
+	}
+	r.ready(() => {
+		r.selected();
+	});
+	return r;
+}
+
 function filter(s) {
 	var label = (className, name) => $("<label class=\"am-form-label " + (className ? className : "") + "\">" + name + "</label>");
 	var input = (type, id, val, placeholder) => {
 		var r = $("<input type=\"" + type + "\" id=\"" + id + "\" placeholder=\"" + placeholder + "\" />");
 		r.val(val);
 		return r;
-	}; 
+	};
+
 	var submit = $.app.t.t("button");
 	submit.addClass("am-btn am-btn-primary");
 	submit.text("筛选记录");
-	var form = $.app.t.t("form");
+	submit.click(() => {
+		window.location.hash = "#/s/?problem=" + $("#problem").val() + "&submitter=" + $("#submitter").val() + "&status=" + ($("#status").val() == "null" ? "" : $("#status").val());
+	});
+
+	var form = $.app.t.t("div");
 	form.addClass("am-form am-form-horizontal");
 	form.append([
 		$.app.t.tag.div("am-form-group", [
@@ -39,7 +62,15 @@ function filter(s) {
 				input("number", "submitter", $.app.params["submitter"], "用户编号"),
 			]),
 			$.app.t.tag.div("am-u-sm-3", [
-				,
+				dropdown("status", $.app.params["status"], {
+					null: "所有状态",
+					"Accepted": "Accepted",
+					"Wrong Answer": "Wrong Answer",
+					"Runtime Error": "Runtime Error",
+					"Time Limit Exceeded": "Time Limit Exceeded",
+					"Memory Limit Exceeded": "Memory Limit Exceeded",
+					"Compilation Error": "Compilation Error",
+				}),
 			]),
 			$.app.t.tag.div("am-u-sm-3", [
 				submit,
