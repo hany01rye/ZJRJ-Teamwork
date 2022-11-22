@@ -24,7 +24,7 @@ function mybutton(text, id) {
         }
 		var res = await $.app.post("/user/", {username: username, email: email, password: password, repeat: repeat});
         console.log(res);
-        if (res != 201) {
+        if (res.status != 201) {
             for (let key in res.data) {
                 alert("Error with " + key + ": " + res.data[key][0]);
                 break;

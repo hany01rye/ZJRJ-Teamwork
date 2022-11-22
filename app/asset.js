@@ -1,6 +1,6 @@
 $.app = {
 	APP_NAME: "STH Online Judge",
-	API_URL: "http://43.140.246.28/api/",
+	API_URL: "/api/",
 	route: undefined,
 	params: undefined,
 	user: undefined,
@@ -102,10 +102,10 @@ $.app = {
 		},
 		auth: function () {
 			if ($.app.login) {
-				var logout = this.tag.a("header-link am-fr", "", "注销");
+				var logout = this.tag.a("header-link am-fr", "javascript: void(0);", "注销");
 				logout.click(async () => {
 					await $.app.get("/user/logout/");
-            		window.location.href = "#/";
+					window.location.hash = "#/login/";
 				});
 				return [
 					logout,

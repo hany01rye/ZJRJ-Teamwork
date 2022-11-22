@@ -55,7 +55,7 @@ const routes = [
 
 async function render(route) {
     NProgress.start();
-    $.app.sync();
+    await $.app.sync();
     if (route.title) {
         $.app.setTitle(route.title);
     }
