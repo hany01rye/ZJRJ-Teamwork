@@ -160,26 +160,31 @@ export async function render() {
 				stat.append(ac);
 			} else {
 				var submit_data = (await $.app.get("/submission/?submitter=" + $.app.user.uid + "&problem=" + pid)).data.submissions;
-				var st = submit_data[0].status;
-				var not_ac = $.app.t.tag.div(null, st);
-				switch (st) {
-					case "Wrong Answer":
-						not_ac.css("color", "red");
-						break;
-					case "Compilation Error":
-						not_ac.css("color", "darkgray");
-						break;
-					case "Runtime Error":
-						not_ac.css("color", "gold");
-						break;
-					case "Time Limit Exceeded":
-						not_ac.css("color", "darkorange");
-						break;
-					case "Memory Limit Exceeded":
-						not_ac.css("color", "darkorange");
-						break;
+				if (submit_data.length > 0) {
+					var st = submit_data[0].status;
+					var not_ac = $.app.t.tag.div(null, st);
+					switch (st) {
+						case "Wrong Answer":
+							not_ac.css("color", "red");
+							break;
+						case "Compilation Error":
+							not_ac.css("color", "darkgray");
+							break;
+						case "Runtime Error":
+							not_ac.css("color", "gold");
+							break;
+						case "Time Limit Exceeded":
+							not_ac.css("color", "darkorange");
+							break;
+						case "Memory Limit Exceeded":
+							not_ac.css("color", "darkorange");
+							break;
+					}
+					stat.append(not_ac);
+				} else {
+					var no_submission = $.app.t.tag.div(null, "尚未提交");
+					stat.append(no_submission);
 				}
-				stat.append(not_ac);
 			}
 		} else {
 			var no_submission = $.app.t.tag.div(null, "尚未提交");
@@ -318,12 +323,13 @@ export async function render() {
 		}
 	});
 
-	submit_bt.click(function() {
+	submit_bt.click(async function() {
 		var lang = slt.val();
 		var source_code = editor.getValue();
-		$.app.post("/submission/", {'problem': pid,
+		var r = await $.app.post("/submission/", {'problem': pid,
 															 'lang': lang,
 															 'source': source_code});
+		window.location.hash = "#/s/" + r.data.sid + "/";
 	});
 	$.app.setTitle(problem.title);
 

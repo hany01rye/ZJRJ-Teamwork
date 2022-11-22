@@ -62,6 +62,11 @@ function testcase(id, t) {
 function testcases(s) {
 	var r = [];
 
+	if (!s.test_cases) {
+		r.push($("<h2>等待评测中</h2>"));
+		return r;
+	}
+
 	if (s.test_cases.Compilation) {
 		r.push($("<h2>编译信息</h2>"));
 		r.push($.app.t.t("pre").text(s.test_cases.Compilation["Compiler Message"]));
