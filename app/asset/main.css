@@ -272,7 +272,7 @@ div:nth-child(2) {
 .side-row {
 	display: flex;
 	justify-content: space-between;
-	font-weight: 700;
+	font-weight: 400;
 	margin: 5px;
 }
 
@@ -339,4 +339,36 @@ input[type="number"] {
 .problem-list tr th:nth-child(4),
 .problem-list tr td:nth-child(4) {
 	text-align: center;
+}
+
+.test-case {
+	width: 10rem;
+	height: 10rem;
+	color: #fff;
+	float: left;
+	margin: 5px;
+}
+.test-case-AC {
+	background-color: #5eb95e;
+}
+.test-case-WA {
+	background-color: #dd514c;
+}
+.test-case-RE, .test-case-TLE, .test-case-MLE {
+	background-color: #f37b1d;
+}
+.test-case-SKIP {
+	background-color: #777;
+}
+.test-case-id {
+	padding: 2px 5px;
+	font-size: 1.2rem;
+}
+.test-case-status {
+	text-align: center;
+	font-size: 2rem;
+}
+.test-case-info {
+	text-align: center;
+	font-size: 1rem;
 }
