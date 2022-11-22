@@ -78,23 +78,28 @@ export async function render() {
 				var input = $.app.t.t("pre"); var output = $.app.t.t("pre");
 				input.css("border-radius", "3px"); output.css("border-radius", "3px");
 				input.text(sp.input); output.text(sp.output);
+				input.attr("id", "input" + j);
+				output.attr("id", "output" + j);
 
 				var lt = $.app.t.tag.div("sample"); var rt = $.app.t.tag.div("sample");
 				lt.append($.app.t.tag.div("sample-title", "输入 #" + (parseInt(j) + 1)));
 				rt.append($.app.t.tag.div("sample-title", "输出 #" + (parseInt(j) + 1)));
 				var cl = $.app.t.t("button"); cl.addClass("copy-button"); cl.text("复制");
 				var cr = $.app.t.t("button"); cr.addClass("copy-button"); cr.text("复制");
+				cl.attr("id", j);
+				cr.attr("id", j);
 				cl.click(async function() {
 					try {
-						await navigator.clipboard.writeText(input.text());
-						cl.text("复制成功");
-						cl.css("background-color", "#0e90d2");
-						cl.css("color", "white");
+						var it = $(this);
+						await navigator.clipboard.writeText($("#input" + it.attr("id")).text());
+						it.text("复制成功");
+						it.css("background-color", "#0e90d2");
+						it.css("color", "white");
 						setTimeout(
 							function() {
-								cl.text("复制");
-								cl.css("background-color", "white");
-								cl.css("color", "#0e90d2");
+								it.text("复制");
+								it.css("background-color", "white");
+								it.css("color", "#0e90d2");
 							}, 500);
 					} catch (e) {
 						console.log(e);
@@ -102,15 +107,16 @@ export async function render() {
 				});
 				cr.click(async function() {
 					try {
-						await navigator.clipboard.writeText(output.text());
-						cr.text("复制成功");
-						cr.css("background-color", "#0e90d2");
-						cr.css("color", "white");
+						var it = $(this);
+						await navigator.clipboard.writeText($("#output" + it.attr("id")).text());
+						it.text("复制成功");
+						it.css("background-color", "#0e90d2");
+						it.css("color", "white");
 						setTimeout(
 							function() {
-								cr.text("复制");
-								cr.css("background-color", "white");
-								cr.css("color", "#0e90d2");
+								it.text("复制");
+								it.css("background-color", "white");
+								it.css("color", "#0e90d2");
 							}, 500);
 					} catch (e) {
 						console.log(e);
