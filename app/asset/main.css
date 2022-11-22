@@ -340,3 +340,40 @@ input[type="number"] {
 .problem-list tr td:nth-child(4) {
 	text-align: center;
 }
+
+.calendar {
+	display: flex;
+	justify-content: center;
+	color: lightseagreen;
+}
+.calendar-month {
+	writing-mode: vertical-lr;
+	font-size: larger;
+}
+.calendar-date {
+	font-size: 108px;
+}
+.calendar-week {
+	writing-mode: vertical-lr;
+	font-size: larger;
+}
+
+.luck-button {
+	font-size: larger;
+	margin-top: 2rem;
+	background-color: lightskyblue;
+	color: orangered;
+	padding: 4px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: none;
+	border-radius: 10%;
+}
+.luck-button:hover {
+	opacity: 80%;
+}
+
+.fortune {
+	font-size: 72px;
+	text-align: center;
+}

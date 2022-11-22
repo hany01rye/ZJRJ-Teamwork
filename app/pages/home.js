@@ -20,10 +20,75 @@ function slider() {
 }
 
 function calendar() {
-	return $.app.t.tag.div("am-text-center am-text-sm", "距 <strong>BCPC2022 决赛</strong> 还剩 <strong>15 天</strong>");
+	var r = $.app.t.tag.div("am-text-center");
+	var countdown = $.app.t.tag.div("am-text-center am-text", "距 <strong>BCPC2022 决赛</strong> 还剩 <strong>15 天</strong>");
+	var today = $.app.t.tag.div("calendar");
+	var month = $.app.t.tag.div("calendar-month");
+	var date = $.app.t.tag.div("calendar-date");
+	var week = $.app.t.tag.div("calendar-week");
+	// TODO
+	month.text("十一月");
+	date.text("23");
+	week.text("周三");
+	today.append(month); today.append(date); today.append(week);
+	r.append(today);
+	r.append(countdown);
+	return r;
+}
+
+function fortune() {
+	var curDate = new Date();
+	var year = curDate.getYear();
+	var month = curDate.getMonth() + 1;
+	var date = curDate.getDate();
+	var week = curDate.getDay();
+
+	var id;
+	// TEST
+	if (!$.app.user) id = 1;
+	else id = $.app.user.uid;
+	var op = (id * year + month * date + week) % 4;
+
+	var r = $.app.t.tag.div(null);
+	var luck = $.app.t.tag.div("fortune");
+	switch (op) {
+		case 0:
+			luck.text("§中平§");
+			luck.css("color", "green");
+			break;
+		case 1:
+			luck.text("§小吉§");
+			luck.css("color", "deeppink");
+			break;
+		case 2:
+			luck.text("§中吉§");
+			luck.css("color", "crimson");
+			break;
+		case 3:
+			luck.text("§大吉§");
+			luck.css("color", "red");
+			break;
+	}
+	r.append(luck);
+	return r;
 }
 
 export async function render() {
+	var cont = $.app.t.t("div");
+	cont.append($.app.t.tag.div("am-text-center", calendar()));
+	var luck_button = $.app.t.t("button");
+	luck_button.addClass("luck-button");
+	luck_button.text("点击打卡");
+	// TEST
+	// if ($.app.user) {
+	cont.append($.app.t.tag.div("am-text-center", luck_button));
+	// }
+
+	luck_button.click(function() {
+		cont.empty();
+		cont.append(fortune());
+	});
+	// var rhs = $.app.t.box(4, cont);
 	return [
 		$.app.t.header(),
 		$.app.t.container([
@@ -31,11 +96,7 @@ export async function render() {
 				$.app.t.box(8, [
 					slider(),
 				]),
-				$.app.t.box(4, [
-					$.app.t.tag.div("am-text-center", [
-						calendar(),
-					]),
-				]),
+				$.app.t.box(4, cont),
 			]),
 			$.app.t.boxes([
 				$.app.t.box(4, [
