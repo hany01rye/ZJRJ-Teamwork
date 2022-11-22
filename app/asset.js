@@ -199,6 +199,7 @@ $.app = {
 			}
 			var r = $.app.t.t("table");
 			r.addClass("am-table");
+			r.addClass("problem-list");
 			r.append("<thead><tr><th>状态</th><th>题号</th><th>题目名称</th><th>通过率</th></tr></thead>");
 			var body = $.app.t.t("tbody");
 			for (var i = 0; i < problem_list.length; i++) {
@@ -211,7 +212,6 @@ $.app = {
 		problem_row: function (item, stat) {
 			var r = $.app.t.t("tr");
 			var td = $.app.t.t("td");
-			td.css("padding-left", "14px");
 			var pic = $.app.t.t("i");
 			if (stat) {
 				pic.addClass("fa-regular fa-check")
@@ -225,12 +225,11 @@ $.app = {
 			r.append(td);
 
 			var td = $.app.t.t("td");
-			td.css("padding-left", "16px");
 			td.text(item.pid);
 			r.append(td);
 
 			var td = $.app.t.t("td");
-			td.append($.app.t.tag.a(null, "#/p/" + item.pid, item.title));
+			td.append($.app.t.tag.a(null, "#/p/" + item.pid + "/", item.title));
 			r.append(td);
 
 			var td = $.app.t.t("td");
@@ -240,12 +239,7 @@ $.app = {
 			var count = $.app.t.tag.div("am-progress-bar");
 			count.css("width", (item.accepted_count / item.submission_count * 100) + "%");
 			ratio.append(count);
-			// var ratio = $.app.t.t("meter");
-			// ratio.attr("min", "0");
-			// ratio.attr("max", item.submission_count);
-			// ratio.attr("value", item.accepted_count);
 			td.append(ratio);
-			// td.text(item.accepted_count + "/" + item.submission_count);
 			r.append(td);
 			return r;
 		},

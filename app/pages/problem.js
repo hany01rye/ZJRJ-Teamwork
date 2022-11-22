@@ -3,7 +3,6 @@ export async function render() {
   var pid = $.app.params.pid;
 	var problem = (await $.app.get("/problem/" + pid + "/"));
 	var problem = problem.data;
-	console.log(problem);
 	var uid = problem.author_uid;
 	var u = (await $.app.get("/user/" + uid + "/"));
 	var uName = u.data.username;
@@ -63,7 +62,6 @@ export async function render() {
 
 	main.css("padding-top", "5px");
 	var p = problem.statement.sections;
-	console.log(p);
 	for (var i in p) {
 		if (p[i].is_sample) {
 			var sec = $.app.t.t("div");
@@ -145,8 +143,43 @@ export async function render() {
 	auth.append($.app.t.tag.div(null, uName))
 	c1.append(auth);
 	var stat = $.app.t.tag.div("side-row");
-	stat.append($.app.t.tag.div(null, "历史状态"));
-	stat.append($.app.t.tag.div(null, "0"));
+	if ($.app.user) {
+		stat.append($.app.t.tag.div(null, "历史状态"));
+		var path = "/submission/?submitter=" + $.app.user.uid + "&problem=" + pid + "&status=Accepted";
+		var accept_check = (await $.app.get(path)).data.submissions;
+		if (accept_check) {
+			if (accept_check.length > 0) {
+				var ac = $.app.t.tag.div(null, "Accepted");
+				ac.css("color", "green");
+				stat.append(ac);
+			} else {
+				var submit_data = (await $.app.get("/submission/?submitter=" + $.app.user.uid + "&problem=" + pid)).data.submissions;
+				var st = submit_data[0].status;
+				var not_ac = $.app.t.tag.div(null, st);
+				switch (st) {
+					case "Wrong Answer":
+						not_ac.css("color", "red");
+						break;
+					case "Compilation Error":
+						not_ac.css("color", "darkgray");
+						break;
+					case "Runtime Error":
+						not_ac.css("color", "gold");
+						break;
+					case "Time Limit Exceeded":
+						not_ac.css("color", "darkorange");
+						break;
+					case "Memory Limit Exceeded":
+						not_ac.css("color", "darkorange");
+						break;
+				}
+				stat.append(not_ac);
+			}
+		} else {
+			var no_submission = $.app.t.tag.div(null, "尚未提交");
+			stat.append(no_submission);
+		}
+	}
 	c1.append(stat);
 
 	var c2 = $.app.t.tag.div();
@@ -155,12 +188,10 @@ export async function render() {
 	var tb = $.app.t.t("table");
 	tb.addClass("am-table am-table-centered");
 	tb.append($("<thead><tr><th>ID</th><th>结果</th></tr></thead>").css("color", "darkgray"));
-	if ($.app.user) var uid = $.app.user.uid;
 	c2.append(tb);
-	uid = 1;				// test
-	if (uid) {
+	if ($.app.user) {
+		var uid = $.app.user.uid;
 		var submit_data = (await $.app.get("/submission/?submitter=" + uid + "&problem=" + pid)).data.submissions;
-		console.log(submit_data);
 		var t_body = $.app.t.t("tbody");
 		for (var i = 0; i < submit_data.length && i < 5; i++) {
 			var sd = submit_data[i];
@@ -208,7 +239,8 @@ export async function render() {
 	sidebar.append(b1);
 	sidebar.append(b2);
 
-	l.append($.app.t.box(null, main));
+	var page1 = $.app.t.box(null, main);
+	l.append(page1);
 	r.append(sidebar);
 	d.append(l);
 	d.append(r);
@@ -220,13 +252,16 @@ export async function render() {
 	var langChoose = $.app.t.tag.div("language-choose");
 	langChoose.append($.app.t.tag.div("language-choose-son", "选择语言"));
 	var selector = $.app.t.t("form");
-	var slt = $.app.t.t("select");
+	var slt = $("<select data-am-selected></select>");
 	var c_99 = $.app.t.t("option"); c_99.attr("value", "C"); c_99.text("C");
 	var cpp_11 = $.app.t.t("option"); cpp_11.attr("value", "C++ 11"); cpp_11.text("C++ 11");
 	var cpp_14 = $.app.t.t("option"); cpp_14.attr("value", "C++ 14"); cpp_14.text("C++ 14");
 	var cpp_17 = $.app.t.t("option"); cpp_17.attr("value", "C++ 17"); cpp_17.text("C++ 17");
 	var py = $.app.t.t("option"); py.attr("value", "Python 3"); py.text("Python 3");
 	cpp_11.attr("selected", true);
+	slt.ready(() => {
+		slt.selected();
+	});
 	slt.append(c_99);
 	slt.append(cpp_11);
 	slt.append(cpp_14);
@@ -248,26 +283,29 @@ export async function render() {
 
 	// change between problem and code
 	var isProblem = true;
+	var page2 = $.app.t.box(null, code);
 	var editor;
+	l.append(page2);
+	page2.hide();
 	bt.click(function() {
-		l.empty();
 		if (isProblem) {
 			bt.text("返回题目");
-			l.append($.app.t.box(null, code));
+			page2.show();
+			page1.hide();
 			editor = ace.edit("editor");
 			editor.setTheme("ace/theme/xcode");
 			editor.session.setMode("ace/mode/c_cpp");
 			document.getElementById("editor").style.fontSize = '16px';
 		} else {
 			bt.text("提交答案");
-			l.append($.app.t.box(null, main));
+			page1.show();
+			page2.hide();
 		}
 		isProblem = !isProblem;
 	});
 
 	slt.change(function() {
-		console.log(slt.val());
-		if (slt.val() == "Python3") {
+		if (slt.val() == "Python 3") {
 			editor.session.setMode("ace/mode/python");
 		} else {
 			editor.session.setMode("ace/mode/c_cpp");
