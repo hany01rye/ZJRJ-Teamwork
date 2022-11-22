@@ -31,7 +31,7 @@ function mybutton(text, id) {
             }
         } else {
             alert("注册成功");
-            window.location.href = "#/login/";
+            window.location.href = "#/";
         }
 	});
 	r.append(s);
@@ -50,7 +50,10 @@ export async function render() {
 					myform("密码", "password", 1),
 					myform("重复密码", "repeat", 1),
 					mybutton("注册", "register"),
-					$.app.t.tag.div("am-u-md-12 space", "已有账号？<a href=\"#/login/\">登录</a>"),
+					$.app.t.tag.div("am-u-md-12 space", [
+                        $("<span>已有账号？<span>"),
+                        $("<a href=\"#/login/\">登录</a>")]
+                        ),
 				]),
 			]),
 		]),
