@@ -190,7 +190,6 @@ $.app = {
 		get_problems: async function () {
 			var problem_list = (await $.app.get("/problem/")).data.problems;
 			var vis = new Array(problem_list.length).fill(0);
-			$.app.user = (await $.app.get("/user/10/")).data; // test
 			if ($.app.user) {
 				var statistics_lis = (await $.app.get("/user/" + $.app.user.uid + "/statistics/")).data.accepted;
 				for (var i = 0; i < statistics_lis.length; i++) {
