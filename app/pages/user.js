@@ -1,6 +1,9 @@
 function myimg(className, src) {
     var r = $("<img></img>");
     r.addClass(className);
+    if (!src) {
+        src = "app/asset/otter/icecream.png";
+    }
     r.attr("src", src);
     r.attr("width", "200px");
     return r;
@@ -69,7 +72,7 @@ export async function render() {
     var stat = await $.app.get("/user/" + uid + "/statistics/");
     console.log(user.data);
     console.log(stat.data);
-    
+
     $.app.setTitle(user.data.username);
 
 	return [

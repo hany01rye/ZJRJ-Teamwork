@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="asset/css/nprogress.css">
   <script src="asset/js/nprogress.js"></script>
 
+  <script src="asset/js/moment-with-locales.min.js"></script>
+
 <!--
   <script src="asset/js/markdown-it.min.js"></script>
 -->
@@ -64,10 +66,10 @@
       <span class="am-icon-book"></span>
     </a>
     <a href="#/s/" class="side-nav-btn am-btn am-btn-warning">
-      <span class="am-icon-tasks"></span>
+      <span class="am-icon-bar-chart"></span>
     </a>
     <a href="#/j/" class="side-nav-btn am-btn am-btn-success">
-      <span class="am-icon-bar-chart"></span>
+      <span class="am-icon-tasks"></span>
     </a>
     <a href="#/u/" class="side-nav-btn am-btn am-btn-primary">
       <span class="am-icon-users"></span>
@@ -76,6 +78,16 @@
 
   <div id="container">
     <div id="app">
+      <div class="header">
+        <div class="am-g am-g-fixed">
+          <h2 class="am-fl">STH Online Judge</h2>
+        </div>
+      </div>
+      <div class="secondary-header">
+        <div class="am-g am-g-fixed">
+          <h1>加载中</h1>
+        </div>
+      </div>
     </div>
     <div id="footer">
       <div id="footer-container" class="am-g am-g-fixed">
@@ -89,8 +101,6 @@
           </div>
         </div>
         <div class="am-fr am-vertical-align-middle am-text-right">
-          关于 | 帮助
-          <br/>
           Developed by AFSoftware Team
           <br/>
           Copyright © 2022

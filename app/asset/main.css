@@ -288,3 +288,38 @@ div:nth-child(2) {
 .language-choose-son {
 	margin-right: 2rem;
 }
+
+.submission-table {
+	width: 100%;
+}
+.submission-row {
+	height: 3em;
+	width: 100%;
+}
+.submission-row:not(:last-child) {
+	border-bottom: 1px solid #ccc;
+}
+.submission-row > td > div {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+.submission-avatar-container {
+	width: 3em;
+	padding-right: 1em;
+}
+.submission-avatar {
+	height: 3em;
+	border-radius: 1.5em;
+}
+.submission-user {
+	font-weight: bold;
+}
+.submission-status {
+	font-weight: normal;
+}
+.submission-info {
+	color: #888;
+}
+.submission-info-icon {
+	padding-right: 0.5em;
+}

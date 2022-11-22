@@ -62,6 +62,7 @@ async function render(route) {
     const component = await route.component();
     const r = await component.render();
     $("#app").empty();
+    $("html, body").prop("scrollTop", 0);
     $("#app").append(r);
     MathJax.typeset();
     NProgress.done();
@@ -74,8 +75,8 @@ function parseParams(param) {
     }
     var items = param.split("&");
     for (var i = 0; i < items.length; i++) {
-        key = items[i].split("=")[0];
-        value = decodeURI(items[i].split("=")[1]);
+        var key = items[i].split("=")[0];
+        var value = decodeURI(items[i].split("=")[1]);
         params[key] = value;
     }
     return params;
@@ -87,6 +88,10 @@ function getRoute() {
     if (route.length > 0 && route[0] == "#") {
         route = route.substring(1);
     }
+    if (route.indexOf("?") >= 0) {
+        param = route.substring(route.indexOf("?") + 1);
+        route = route.substring(0, route.indexOf("?"));
+    }
     if (route.indexOf("#") >= 0) {
         route = route.substring(0, route.indexOf("#"));
     }
@@ -95,10 +100,6 @@ function getRoute() {
     }
     if (route.length == 0 || route[0] != '/') {
         route = "/" + route;
-    }
-    if (route.indexOf("?") >= 0) {
-        param = route.substring(route.indexOf("?") + 1);
-        route = route.substring(0, route.indexOf("?"));
     }
     param = parseParams(param);
     $.app.route = route;
