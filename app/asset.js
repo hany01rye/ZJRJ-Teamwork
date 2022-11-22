@@ -234,10 +234,16 @@ $.app = {
 			r.append(td);
 
 			var td = $.app.t.t("td");
-			var ratio = $.app.t.t("meter");
-			ratio.attr("min", "0");
-			ratio.attr("max", item.submission_count);
-			ratio.attr("value", item.accepted_count);
+			var ratio = $.app.t.tag.div("am-progress");
+			ratio.css("margin-bottom", "0rem");
+			ratio.css("margin-top", "2px");
+			var count = $.app.t.tag.div("am-progress-bar");
+			count.css("width", (item.accepted_count / item.submission_count * 100) + "%");
+			ratio.append(count);
+			// var ratio = $.app.t.t("meter");
+			// ratio.attr("min", "0");
+			// ratio.attr("max", item.submission_count);
+			// ratio.attr("value", item.accepted_count);
 			td.append(ratio);
 			// td.text(item.accepted_count + "/" + item.submission_count);
 			r.append(td);

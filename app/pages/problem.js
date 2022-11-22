@@ -226,7 +226,7 @@ export async function render() {
 	var cpp_14 = $.app.t.t("option"); cpp_14.attr("value", "C++ 14"); cpp_14.text("C++ 14");
 	var cpp_17 = $.app.t.t("option"); cpp_17.attr("value", "C++ 17"); cpp_17.text("C++ 17");
 	var py = $.app.t.t("option"); py.attr("value", "Python 3"); py.text("Python 3");
-	cpp_11.attr("selected", "selected");
+	cpp_11.attr("selected", true);
 	slt.append(c_99);
 	slt.append(cpp_11);
 	slt.append(cpp_14);
