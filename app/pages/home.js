@@ -14,8 +14,11 @@ function slider() {
 	var c = $.app.t.tag.ul("am-slides");
 	c.append($("<li><img src='app/asset/gallery/pic1.png' /></li>"));
 	c.append($("<li><img src='app/asset/gallery/pic2.png' /></li>"));
+	c.append($("<li><img src='app/asset/gallery/pic3.png' /></li>"));
 	var r = $.app.t.tag.div("am-slider am-slider-default", c);
-	r.flexslider();
+	r.ready(() => {
+		r.flexslider()
+	});
 	return r;
 }
 
