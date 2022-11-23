@@ -134,7 +134,7 @@ function mdEscape(s) {
 }
 
 export async function render() {
-	var title_map = new Map([['', '题目描述'], ['Input', '输入格式'], ['Output', '输出格式']])
+	// var title_map = new Map([['', '题目描述'], ['Input', '输入格式'], ['Output', '输出格式']])
   var pid = $.app.params.pid;
 	var problem = (await $.app.get("/problem/" + pid + "/"));
 	var problem = problem.data;
@@ -200,7 +200,7 @@ export async function render() {
 	for (var i in p) {
 		if (p[i].is_sample) {
 			var sec = $.app.t.t("div");
-			var t = $.app.t.tag.div("problem-h2", "输入输出样例");
+			var t = $.app.t.tag.div("problem-h2", p[i].title);
 			sec.append(t);
 
 			var s = $.app.t.tag.div("sample-wrap", null);
@@ -301,7 +301,7 @@ export async function render() {
 			continue;
 		}
 		var sec = $.app.t.t("div");
-		var t = $.app.t.tag.div("problem-h2", title_map.get(p[i].title));
+		var t = $.app.t.tag.div("problem-h2", p[i].title);
 		var ct = $.app.t.t("div");
 		ct.html(marked.parse(mdEscape(problem.statement.sections[i].content)));
 		sec.append(t);
