@@ -64,7 +64,7 @@ async function render(route) {
     $("#app").empty();
     $("html, body").prop("scrollTop", 0);
     $("#app").append(r);
-    MathJax.typeset();
+    MathJax.Hub.Typeset();
     NProgress.done();
 }
 

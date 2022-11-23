@@ -1,3 +1,138 @@
+function mdEscapeChar(c) {
+	if (c == "\\") {
+		return "\\\\";
+	}
+	if (c == "_") {
+		return "\\_";
+	}
+	if (c == "*") {
+		return "\\*";
+	}
+	return c;
+}
+
+function mdEscape(s) {
+	var t = "";
+	var inMath = false;
+	var tok = "", esctok = "";
+	var ldelim = "";
+	var newline = 0;
+	for (var i = 0; i < s.length; i++) {
+		if (i < s.length - 2 && s[i] == "`" && s[i + 1] == "`" && s[i + 2] == "`") {
+			var linecnt = 0;
+			var r = i + 1;
+			while (r < s.length - 2) {
+				if (s[r] == "\n") {
+					linecnt++;
+				}
+				if (linecnt > 0 && s[r] == "`" && s[r + 1] == "`" && s[r + 2] == "`") {
+					break;
+				}
+				r++;
+			}
+			if (r < s.length - 2 && linecnt > 0 && s[r] == "`" && s[r + 1] == "`" && s[r + 2] == "`") {
+				if (inMath && (ldelim == "$" || ldelim == "\\(")) {
+					inMath = false;
+					t += ldelim + tok;
+				}
+				if (!inMath) {
+					while (i < r) {
+						t += s[i];
+						i++;
+					}
+					while (s[i + 1] == "`") {
+						t += s[i];
+						i++;
+					}
+					t += s[i];
+					continue;
+				}
+			}
+		}
+		if (!inMath) {
+			if (i < s.length - 1 && s[i] == "`" && s[i + 1] != "`") {
+				var r = i + 1;
+				while (r < s.length && s[r] != "\n" && s[r] != "`") {
+					r++;
+				}
+				if (r < s.length && s[r] == "`") {
+					while (i < r) {
+						t += s[i];
+						i++;
+					}
+					t += s[r];
+					continue;
+				}
+			}
+			if (i < s.length - 1 && s[i] == "\\" && "[(".includes(s[i + 1])) {
+				ldelim = s[i] + s[i + 1];
+				i++;
+				inMath = true;
+				esctok = tok = "";
+				newline = 0;
+				continue;
+			}
+			if (i < s.length - 1 && s[i] == "$" && s[i + 1] == "$") {
+				ldelim = s[i] + s[i + 1];
+				i++;
+				inMath = true;
+				esctok = tok = "";
+				newline = 0;
+				continue;
+			}
+			if (s[i] == "$" && (i == 0 || s[i - 1] != "\\") && i < s.length - 1 && s[i + 1] != " " && s[i + 1] != "$") {
+				ldelim = s[i];
+				inMath = true;
+				esctok = tok = "";
+				newline = 0;
+				continue;
+			}
+			t += s[i];
+			continue;
+		}
+		if (s[i] == "\n") {
+			newline++;
+		}
+		if (!" \n\r\t".includes(s[i])) {
+			newline = 0;
+		}
+		if ((ldelim == "$" || ldelim == "\\(") && newline >= 2) {
+			inMath = false;
+			t += ldelim + tok + s[i];
+			continue;
+		}
+		if (ldelim == "\\(" && i < s.length - 1 && s[i] == "\\" && s[i + 1] == ")" && s[i - 1] != "\\") {
+			inMath = false;
+			t += ldelim + esctok + s[i] + s[i + 1];
+			i++;
+			continue;
+		}
+		if (ldelim == "\\[" && i < s.length - 1 && s[i] == "\\" && s[i + 1] == "]" && s[i - 1] != "\\") {
+			inMath = false;
+			t += ldelim + esctok + s[i] + s[i + 1];
+			i++;
+			continue;
+		}
+		if (ldelim == "$$" && i < s.length - 1 && s[i] == "$" && s[i + 1] == "$" && s[i - 1] != "\\") {
+			inMath = false;
+			t += ldelim + esctok + s[i] + s[i + 1];
+			i++;
+			continue;
+		}
+		if (ldelim == "$" && s[i] == "$" && s[i - 1] != "\\" && s[i - 1] != " " && (i < s.length + 1 || !"0123456789".includes(s[i + 1]))) {
+			inMath = false;
+			t += ldelim + esctok + s[i];
+			continue;
+		}
+		tok += s[i];
+		esctok += mdEscapeChar(s[i]);
+	}
+	if (inMath) {
+		t += ldelim + tok;
+	}
+	return t;
+}
+
 export async function render() {
 	var title_map = new Map([['', '题目描述'], ['Input', '输入格式'], ['Output', '输出格式']])
   var pid = $.app.params.pid;
@@ -91,7 +226,23 @@ export async function render() {
 				cl.click(async function() {
 					try {
 						var it = $(this);
-						await navigator.clipboard.writeText($("#input" + it.attr("id")).text());
+						var copy_text = $("#input" + it.attr("id")).text();
+						if (navigator.clipboard && window.isSecureContext) {
+							await navigator.clipboard.writeText(copy_text);
+						} else {
+							let textArea = document.createElement("textarea");
+							textArea.value = copy_text;
+							textArea.style.position = "fixed";
+							textArea.style.left = "-999999px";
+							textArea.style.top = "-999999px";
+							document.body.appendChild(textArea);
+							textArea.focus();
+							textArea.select();
+							await new Promise((res, rej) => {
+									document.execCommand('copy') ? res() : rej();
+									textArea.remove();
+							});
+						}
 						it.text("复制成功");
 						it.css("background-color", "#0e90d2");
 						it.css("color", "white");
@@ -108,7 +259,23 @@ export async function render() {
 				cr.click(async function() {
 					try {
 						var it = $(this);
-						await navigator.clipboard.writeText($("#output" + it.attr("id")).text());
+						var copy_text = $("#output" + it.attr("id")).text();
+						if (navigator.clipboard && window.isSecureContext) {
+							await navigator.clipboard.writeText(copy_text);
+						} else {
+							let textArea = document.createElement("textarea");
+							textArea.value = copy_text;
+							textArea.style.position = "fixed";
+							textArea.style.left = "-999999px";
+							textArea.style.top = "-999999px";
+							document.body.appendChild(textArea);
+							textArea.focus();
+							textArea.select();
+							await new Promise((res, rej) => {
+									document.execCommand('copy') ? res() : rej();
+									textArea.remove();
+							});
+						}
 						it.text("复制成功");
 						it.css("background-color", "#0e90d2");
 						it.css("color", "white");
@@ -136,7 +303,7 @@ export async function render() {
 		var sec = $.app.t.t("div");
 		var t = $.app.t.tag.div("problem-h2", title_map.get(p[i].title));
 		var ct = $.app.t.t("div");
-		ct.html(marked.parse(problem.statement.sections[i].content));
+		ct.html(marked.parse(mdEscape(problem.statement.sections[i].content)));
 		sec.append(t);
 		sec.append(ct);
 		main.append(sec);
