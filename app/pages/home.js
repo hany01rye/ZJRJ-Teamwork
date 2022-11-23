@@ -21,22 +21,27 @@ function slider() {
 
 function calendar() {
 	var r = $.app.t.tag.div("am-text-center");
-	var countdown = $.app.t.tag.div("am-text-center am-text", "距 <strong>BCPC2022 决赛</strong> 还剩 <strong>15 天</strong>");
+	var days = 1 + moment.duration(moment("2022-12-03T13:00:00+08:00").diff(moment())).days();
+	var countdown = $.app.t.tag.div("am-text-center am-text", "距 <strong>BCPC2022 决赛</strong> 还剩 <strong>" + days + " 天</strong>");
 	var today = $.app.t.tag.div("calendar");
 	var month = $.app.t.tag.div("calendar-month");
 	var date = $.app.t.tag.div("calendar-date");
 	var week = $.app.t.tag.div("calendar-week");
 	// TODO
-	month.text("十一月");
-	date.text("23");
-	week.text("周三");
+	month.text(moment().locale("zh-CN").format("MMMM"));
+	date.text(moment().locale("zh-CN").format("DD"));
+	week.text(moment().locale("zh-CN").format("dddd"));
 	today.append(month); today.append(date); today.append(week);
 	r.append(today);
+	r.append(fortune());
 	r.append(countdown);
 	return r;
 }
 
 function fortune() {
+	if (!$.app.login) {
+		return $.app.t.tag.div(null);
+	}
 	var curDate = new Date();
 	var year = curDate.getYear();
 	var month = curDate.getMonth() + 1;
@@ -76,18 +81,18 @@ function fortune() {
 export async function render() {
 	var cont = $.app.t.t("div");
 	cont.append($.app.t.tag.div("am-text-center", calendar()));
-	var luck_button = $.app.t.t("button");
-	luck_button.addClass("luck-button");
-	luck_button.text("点击打卡");
+	// var luck_button = $.app.t.t("button");
+	// luck_button.addClass("am-btn am-btn-warning");
+	// luck_button.text("点击打卡");
 	// TEST
 	// if ($.app.user) {
-	cont.append($.app.t.tag.div("am-text-center", luck_button));
+	// cont.append($.app.t.tag.div("am-text-center", luck_button));
 	// }
 
-	luck_button.click(function() {
-		cont.empty();
-		cont.append(fortune());
-	});
+	// luck_button.click(function() {
+	//	cont.empty();
+	//	cont.append(fortune());
+	// });
 	// var rhs = $.app.t.box(4, cont);
 	return [
 		$.app.t.header(),

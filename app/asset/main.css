@@ -351,7 +351,8 @@ input[type="number"] {
 	font-size: larger;
 }
 .calendar-date {
-	font-size: 108px;
+	font-size: 10rem;
+	padding: 0 1rem;
 }
 .calendar-week {
 	writing-mode: vertical-lr;
@@ -374,8 +375,10 @@ input[type="number"] {
 }
 
 .fortune {
-	font-size: 72px;
+	font-size: 3rem;
+	font-weight: bold;
 	text-align: center;
+	margin-bottom: 1rem;
 }
 
 .test-case {
