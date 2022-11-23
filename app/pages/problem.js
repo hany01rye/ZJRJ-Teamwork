@@ -159,7 +159,8 @@ export async function render() {
 	var bt = $.app.t.t("button");
 	bt.addClass("submit-btn")
 	bt.text("提交答案");
-	bottom.append(bt);
+	if ($.app.user)
+		bottom.append(bt);
 
 	var tl = problem.judge_info.time_limit / 1000;
 	var ml = problem.judge_info.memory_limit / 1024;
