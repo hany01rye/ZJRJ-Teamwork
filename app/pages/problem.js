@@ -161,6 +161,8 @@ export async function render() {
 	bt.text("提交答案");
 	if ($.app.user)
 		bottom.append(bt);
+	else
+		bottom.append($.app.t.tag.div(null));
 
 	var tl = problem.judge_info.time_limit / 1000;
 	var ml = problem.judge_info.memory_limit / 1024;
