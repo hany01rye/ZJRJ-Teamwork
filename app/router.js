@@ -30,6 +30,7 @@ const routes = [
     },
     {
         path: "/s/:sid",
+        title: "提交详情",
         component: () => import("./pages/submission.js"),
     },
     {
