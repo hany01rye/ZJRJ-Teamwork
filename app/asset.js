@@ -1,6 +1,6 @@
 $.app = {
 	APP_NAME: "STH Online Judge",
-	API_URL: "/api/",
+	API_URL: "http://43.140.246.28/api/",
 	route: undefined,
 	params: undefined,
 	user: undefined,
